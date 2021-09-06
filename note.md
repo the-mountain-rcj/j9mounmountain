@@ -72,7 +72,7 @@ random.choices(population,weights=None,*,cum_weights=None,k=1)
 
 ```
 
-![image-20210824102717134](C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20210824102717134.png)
+![image-20210824102717134](note.assets/image-20210824102717134-163091155455410.png)
 
 
 
@@ -133,7 +133,7 @@ class Solution:
         return last
 ```
 
-<img src="C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20210822214017568.png" alt="image-20210822214017568" style="zoom:10%;" />
+<img src="note.assets/image-20210822214017568-163091167437711.png" alt="image-20210822214017568" style="zoom:10%;" />
 
 
 
@@ -156,7 +156,7 @@ def reverseN(head, right):
 
 如果是012345，n =3
 
-<img src="C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20210822214044067.png" alt="image-20210822214044067" style="zoom:10%;" />
+<img src="C:\Users\admin\Desktop\offer\offer\note.assets\image-20210822214044067.png" alt="image-20210822214044067" style="zoom:10%;" />
 
 
 
@@ -279,7 +279,7 @@ class Solution:
 
 
 
-<img src="https://camo.githubusercontent.com/05f375896b965b6c1b2ead25c838b5b3385d18a112878d8e9d3dabacaf2cce8f/68747470733a2f2f696d672d626c6f672e6373646e696d672e636e2f32303231303231393139303830393435312e706e67" alt="二叉树大纲" style="zoom:50%;" />
+<img src="C:\Users\admin\Desktop\offer\offer\note.assets\68747470733a2f2f696d672d626c6f672e6373646e696d672e636e2f32303231303231393139303830393435312e706e67" alt="二叉树大纲" style="zoom:50%;" />
 
 
 
@@ -534,7 +534,7 @@ d
 
 ##### 归并排序**
 
-![849589-20171015230557043-37375010.gif](https://pic.leetcode-cn.com/6cd459ced71fa1f899e547c2ebbd4c51b19258e983f7bee38ef068fa81c6a863-849589-20171015230557043-37375010.gif)
+![849589-20171015230557043-37375010.gif](C:\Users\admin\Desktop\offer\offer\note.assets\6cd459ced71fa1f899e547c2ebbd4c51b19258e983f7bee38ef068fa81c6a863-849589-20171015230557043-37375010.gif)
 
 ```python
 def merge_sort(self,nums):
@@ -637,7 +637,7 @@ d
 
 选牌插入
 
-<img src="https://pic3.zhimg.com/v2-8a97a82ab39183f3177e99b5bb74e55e_b.webp" alt="img"  />
+<img src="C:\Users\admin\Desktop\offer\offer\note.assets\v2-8a97a82ab39183f3177e99b5bb74e55e_b.webp" alt="img"  />
 
 ```python
 def insertion_sort(self, nums):
@@ -653,7 +653,7 @@ def insertion_sort(self, nums):
 
 ##### 希尔排序【?】
 
-![849589-20180331170017421-364506073.gif](https://pic.leetcode-cn.com/cb7ce9df25f122c02e243d5f9b69ae4692fd3c04da25fab2c60775eb95cb6749-849589-20180331170017421-364506073.gif)
+![849589-20180331170017421-364506073.gif](C:\Users\admin\Desktop\offer\offer\note.assets\cb7ce9df25f122c02e243d5f9b69ae4692fd3c04da25fab2c60775eb95cb6749-849589-20180331170017421-364506073.gif)
 
 ```python
 def shell_sort(self,nums):
@@ -674,7 +674,7 @@ def shell_sort(self,nums):
 
 两个for选择最小值和前面交换
 
-![img](https://pic1.zhimg.com/v2-1c7e20f306ddc02eb4e3a50fa7817ff4_b.webp)
+![img](C:\Users\admin\Desktop\offer\offer\note.assets\v2-1c7e20f306ddc02eb4e3a50fa7817ff4_b.webp)
 
 ```python
 def selection_sort(self,a):
@@ -691,7 +691,7 @@ def selection_sort(self,a):
 
 ##### 冒泡排序
 
-<img src="https://pic4.zhimg.com/v2-33a947c71ad62b254cab62e5364d2813_b.webp" alt="img"  />
+<img src="C:\Users\admin\Desktop\offer\offer\note.assets\v2-33a947c71ad62b254cab62e5364d2813_b.webp" alt="img"  />
 
 ```python
 def maopao(self,a):
@@ -724,7 +724,7 @@ sta.push(x)
 
 示例 1:
 
-![img](https://assets.leetcode.com/uploads/2021/01/04/histogram.jpg)
+![img](C:\Users\admin\Desktop\offer\offer\note.assets\histogram.jpg)
 
 输入：heights = [2,1,5,6,2,3]
 输出：10
@@ -760,7 +760,7 @@ class Solution:
 
 示例 1：
 
-![img](https://assets.leetcode.com/uploads/2020/09/14/maximal.jpg)
+![img](C:\Users\admin\Desktop\offer\offer\note.assets\maximal.jpg)
 
 输入：matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
 输出：6
@@ -940,7 +940,7 @@ class Solution:
 
 
 
-<img src="C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20210822223457232.png" alt="image-20210822223457232" style="zoom:50%;" />
+<img src="C:\Users\admin\Desktop\offer\offer\note.assets\image-20210822223457232.png" alt="image-20210822223457232" style="zoom:50%;" />
 
 ##### 26.删除有序数组中的重复项
 
@@ -1038,7 +1038,7 @@ class Solution:
 
 
 
-<img src="C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20210822223348825.png" alt="image-20210822223348825" style="zoom: 50%;" />
+<img src="C:\Users\admin\Desktop\offer\offer\note.assets\image-20210822223348825.png" alt="image-20210822223348825" style="zoom: 50%;" />
 
 ##### 1. 两数之和[超级简单题]
 
@@ -1272,7 +1272,7 @@ class Solution:
 
 
 
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist.png)
+![img](C:\Users\admin\Desktop\offer\offer\note.assets\circularlinkedlist.png)
 
 
 
@@ -1386,7 +1386,7 @@ for r in range(N): #右指针移动
     	l+=1
 ```
 
-<img src="C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20210822223516883.png" alt="image-20210822223516883" style="zoom:50%;" />
+<img src="C:\Users\admin\Desktop\offer\offer\note.assets\image-20210822223516883.png" alt="image-20210822223516883" style="zoom:50%;" />
 
 
 
@@ -1918,7 +1918,7 @@ class Solution:
 
 
 
-![image-20210901001229146](C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20210901001229146.png)
+![image-20210901001229146](C:\Users\admin\Desktop\offer\offer\note.assets\image-20210901001229146.png)
 
 ##### 304. 二维区域和检索 - 矩阵不可变[基础知识]
 
@@ -2705,6 +2705,8 @@ class Solution:
 
 
 
+
+
 # 急转弯
 
 ##### 448. 找到所有数组中消失的数字
@@ -2736,4 +2738,6 @@ class Solution:
         return [i + 1 for i, num in enumerate(nums) if num > 0]
 
 ```
+
+
 
