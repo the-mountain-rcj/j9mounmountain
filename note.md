@@ -133,7 +133,7 @@ class Solution:
         return last
 ```
 
-<img src="note.assets/image-20210822214017568-163091167437711.png" alt="image-20210822214017568" style="zoom:10%;" />
+<img src="note.assets/image-20210822214017568-163091167437711-163091174487112.png" alt="image-20210822214017568" style="zoom:10%;" />
 
 
 
@@ -156,7 +156,7 @@ def reverseN(head, right):
 
 如果是012345，n =3
 
-<img src="C:\Users\admin\Desktop\offer\offer\note.assets\image-20210822214044067.png" alt="image-20210822214044067" style="zoom:10%;" />
+<img src="note.assets/image-20210822214044067-163091174755413.png" alt="image-20210822214044067" style="zoom:10%;" />
 
 
 
@@ -279,7 +279,7 @@ class Solution:
 
 
 
-<img src="C:\Users\admin\Desktop\offer\offer\note.assets\68747470733a2f2f696d672d626c6f672e6373646e696d672e636e2f32303231303231393139303830393435312e706e67" alt="二叉树大纲" style="zoom:50%;" />
+<img src="note.assets/68747470733a2f2f696d672d626c6f672e6373646e696d672e636e2f32303231303231393139303830393435312e706e67-163091175065614" alt="二叉树大纲" style="zoom:50%;" />
 
 
 
