@@ -508,6 +508,364 @@ print("minHeap size: ", size)
 
 
 
+##### 502. IPO
+
+假设 力扣（LeetCode）即将开始 IPO 。为了以更高的价格将股票卖给风险投资公司，力扣 希望在 IPO 之前开展一些项目以增加其资本。 由于资源有限，它只能在 IPO 之前完成最多 k 个不同的项目。帮助 力扣 设计完成最多 k 个不同项目后得到最大总资本的方式。
+
+给你 n 个项目。对于每个项目 i ，它都有一个纯利润 profits[i] ，和启动该项目需要的最小资本 capital[i] 。
+
+最初，你的资本为 w 。当你完成一个项目时，你将获得纯利润，且利润将被添加到你的总资本中。
+
+总而言之，从给定项目中选择 最多 k 个不同项目的列表，以 最大化最终资本 ，并输出最终可获得的最多资本。
+
+答案保证在 32 位有符号整数范围内。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/ipo
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+贪心+最小堆
+
+```python
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        PandC = sorted(list(zip(profits,capital)),key = lambda x:x[1])
+        n = len(profits)
+        cur = []
+        idx = 0
+        while k :
+            while idx<n and PandC[idx][1] <= w:
+                heapq.heappush(cur,-PandC[idx][0])
+                idx+=1
+            if cur:
+                w -= heapq.heappop(cur)
+            else:
+                break
+            k-=1
+        return w
+
+            
+```
+
+
+
+
+
+
+
+
+
+
+
+# 图
+
+学习资料：
+
+https://leetcode-cn.com/leetbook/read/graph/rqu5q7/
+
+
+
+### 并查集
+
+```python
+def find(x):
+    if x == root[x]:
+        return x
+    root[x] = find(root[x])
+    return root[x]
+def union(x,y):  
+	root[find(x)] = find(y)
+```
+
+
+
+##### 547.省份数量（中等）
+
+有 n 个城市，其中一些彼此相连，另一些没有相连。如果城市 a 与城市 b 直接相连，且城市 b 与城市 c 直接相连，那么城市 a 与城市 c 间接相连。
+
+省份 是一组直接或间接相连的城市，组内不含其他没有相连的城市。
+
+给你一个 n x n 的矩阵 isConnected ，其中 isConnected[i][j] = 1 表示第 i 个城市和第 j 个城市直接相连，而 isConnected[i][j] = 0 表示二者不直接相连。
+
+返回矩阵中 省份 的数量。
+
+
+链接：https://leetcode-cn.com/problems/number-of-provinces
+
+
+
+
+```python
+class Solution:
+    def findCircleNum(self, isConnected: List[List[int]]) -> int:
+        pNums = len(isConnected)
+        root = [i for i in range(pNums)]       
+        def find(x):
+            if x == root[x]:
+                return x
+            root[x] = find(root[x])
+            return root[x]
+        def union(x,y):  
+            root[find(x)] = find(y)
+        for i in range(pNums):
+            for j in range(i):
+                if isConnected[i][j]:
+                    union(i,j)
+        return sum(root[i] ==i for i in range(pNums))
+                
+        # pNums = len(isConnected)
+        # root = [i for i in range(pNums)]
+        # rank = [1 for i in range(pNums)]
+        # def find(x):
+        #     if x == root[x]:
+        #         return x
+        #     root[x] = find(root[x])
+        #     return root[x]
+        # def union(x,y):  
+        #     if rank[find(x)]>rank[find(y)]:
+        #         root[find(y)] = find(x)
+        #     elif rank[find(x)]<rank[find(y)]:
+        #         root[find(x)] = find(y)
+        #     else:
+        #         root[find(x)] = find(y)
+        #         rank[x]+=1                 
+        # for i in range(pNums):
+        #     find(i)
+        # print(root)
+        # return len(set(root))
+```
+
+
+
+##### 1202.交换字符串中的元素（中等）*
+
+给你一个字符串 s，以及该字符串中的一些「索引对」数组 pairs，其中 pairs[i] = [a, b] 表示字符串中的两个索引（编号从 0 开始）。
+
+你可以 任意多次交换 在 pairs 中任意一对索引处的字符。
+
+返回在经过若干次交换后，s 可以变成的按字典序最小的字符串。
+
+
+链接：https://leetcode-cn.com/problems/smallest-string-with-swaps
+
+
+```python
+class Solution:
+    def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
+        
+        ans = list()
+        sLen = len(s)
+        root = [i for i in range(sLen)]
+        def find(x):
+            if root[x] == x:
+                return x
+            root[x] = find(root[x])
+            return root[x]
+        def union(x,y):
+            root[find(x)] = find(y)
+            
+        for i in range(len(pairs)):
+            union(pairs[i][0],pairs[i][1])
+        reDict= collections.defaultdict(list)
+        for i in range(sLen):
+            reDict[find(i)].append(s[i])
+        print(reDict)
+        for charList in reDict.values():
+            charList.sort(reverse = True)
+        for i in range(sLen):
+            ans.append(reDict[find(i)].pop())
+        return "".join(ans)
+```
+
+
+
+
+
+##### 1998. 数组的最大公因数排序❤
+
+给你一个整数数组 nums ，你可以在 nums 上执行下述操作 任意次 ：
+
+如果 gcd(nums[i], nums[j]) > 1 ，交换 nums[i] 和 nums[j] 的位置。其中 gcd(nums[i], nums[j]) 是 nums[i] 和 nums[j] 的最大公因数。
+如果能使用上述交换方式将 nums 按 非递减顺序 排列，返回 true ；否则，返回 false 。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/gcd-sort-of-an-array
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+和1202题相似，将可以交换的放在一起比比较排序后 与原先数字不同的是否为可交换。
+
+```python
+class Solution:
+    def gcdSort(self, nums: List[int]) -> bool:
+        root = [i for i in range(max(nums)+1)]
+
+        def find(x):
+            if x==root[x]:
+                return x
+            root[x] = find(root[x])
+            return root[x]
+
+        def union(x,y):
+            root[find(x)] = find(y)
+
+        def isConnected(x,y):
+            return find(x) == find(y)
+
+        for num in set(nums):#使用set减少重复计算
+            n = num
+            for i in range(2,int(n**0.5+1)):
+                while n%i == 0:
+                    n//=i
+                    union(i,num)
+            if n != 1:
+                union(n,num)
+
+        a = sorted(nums)
+        for i in range(len(a)):
+            if not isConnected(a[i],nums[i]):
+                return False
+        return True
+        
+```
+
+
+
+
+
+
+
+### 最小生成树【prim算法还没写】
+
+
+
+Kruskal算法：按照权重排序，如果成环[即并查集中find(x) == find(y)]跳过，n-1条连接结束
+
+Prim算法：贪心，顶点为主导，加入未加入的顶点里面和加入的顶点里面的最小值
+
+Kruskal算法时间复杂度为O(M*log(M)), M为边数, 适合于稀疏图；Prim算法的时间复杂度为O(N^2), N为顶点数量, 适合于稠密图或完全图
+
+
+
+##### 1135.最低成本联通所有城市（中等）
+
+想象一下你是个城市基建规划者，地图上有 N 座城市，它们按以 1 到 N 的次序编号。
+
+给你一些可连接的选项 conections，其中每个选项 conections[i] = [city1, city2, cost] 表示将城市 city1 和城市 city2 连接所要的成本。（连接是双向的，也就是说城市 city1 和城市 city2 相连也同样意味着城市 city2 和城市 city1 相连）。
+
+返回使得每对城市间都存在将它们连接在一起的连通路径（可能长度为 1 的）最小成本。该最小成本应该是所用全部连接代价的综合。如果根据已知条件无法完成该项任务，则请你返回 -1。
+
+ 
+
+示例 1：
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2019/07/27/1314_ex2.png)
+
+输入：N = 3, conections = [[1,2,5],[1,3,6],[2,3,1]]
+输出：6
+解释：
+选出任意 2 条边都可以连接所有城市，我们从中选取成本最小的 2 条。
+
+
+链接：https://leetcode-cn.com/problems/connecting-cities-with-minimum-cost
+
+
+
+
+经典最小生成树，Kruskal算法：
+
+```python
+class Solution:
+    def minimumCost(self, n: int, connections: List[List[int]]) -> int:
+        RES = 0
+        COUNT = 0
+        root = [i for i in range(n+1)]
+        #find()别写错了
+        def find(x):
+            if x == root[x]:
+                return x
+            root[x] = find(root[x])
+            return root[x]
+            
+        def union(x,y):
+            root[find(x)] = find(y)
+
+        def isnotConnect(x,y):
+            return find(x) != find(y)
+
+        connections.sort(key = lambda x:x[-1])
+
+        for i in range(len(connections)):
+            if isnotConnect(connections[i][0],connections[i][1]):
+                union(connections[i][0],connections[i][1])
+                RES+=connections[i][2]
+                COUNT+=1
+                if COUNT == n-1:
+                    return RES
+        return -1
+```
+
+
+
+##### 1584.连接所有点的最小费用（中等）
+
+
+
+经典最小生成树，Kruskal算法：
+
+```python
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:    
+        N = len(points)
+        root = [i for i in range(N)]
+        dis = []
+        for i in range(N):
+            for j in range(i+1,N):
+                dis.append([i,j,abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1])])
+        dis.sort(key=lambda x:x[-1])
+
+        def find(x):
+            if x == root[x]:
+                return x
+            root[x] = find(root[x])
+            return root[x]
+        def union(x,y):
+            root[find(x)] = find(y)
+        def canConnect(x,y):
+            return find(x) != find(y)
+        res =0
+        COUNT=0
+        for i in range(len(dis)):
+            if canConnect(dis[i][0],dis[i][1]):
+                union(dis[i][0],dis[i][1])
+                res+=dis[i][2] 
+                COUNT+=1
+                if COUNT == N-1:
+                    break 
+        return res
+```
+
+
+
+
+
+### 单源最短路径相关算法[加权图路径]
+
+
+
+Dijkstra 算法，Bellman-Ford 算法
+
+
+
+##### 拓扑排序之 Kahn 算法
+
+
+
+
+
 
 
 
@@ -805,11 +1163,93 @@ class Solution:
 
 # 二分法
 
+模板
+
+```python
+def dichotomy(self,list,n):#找到>=target左边界值输出#记住格式
+    min = 0
+    max = len(list) # len(list)
+    while min<max:
+        mid = min + ((max - min)>>1)
+        if n>list[mid]:    #[1,2,3,3,5],3 >return2 就是 bisect_left;  >=return4>=就是插入位置,
+            min = mid+1
+        else:
+            max =mid
+    return min
+
+def dichotomyat(self,list,n):#找到>=target左边界值输出#记住格式
+    min = 0
+    max = len(list) # len(list)
+    while min<max:
+        mid = min + ((max - min)>>1)
+        if n == list[mid]:
+            return mid
+        elif n>list[mid]:
+            min = mid+1
+        else:
+            max =mid
+    return None
+```
 
 
 
 
-##### 327. 区间和的个数
+
+##### 
+
+##### 74. 搜索二维矩阵
+
+编写一个高效的算法来判断 m x n 矩阵中，是否存在一个目标值。该矩阵具有如下特性：
+
+每行中的整数从左到右按升序排列。
+每行的第一个整数大于前一行的最后一个整数。
+
+
+![img](note.assets/mat.jpg)
+
+
+
+一步二分即可解决，简单题，也可以直接搜索
+
+```python
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        m = len(matrix)
+        n =len(matrix[0])
+        r = m*n
+        l = 0
+        while l<r:
+            mid = l+((r-l)>>1)
+            a =matrix[mid//n][mid%n]
+            if target == a:
+                return True
+            elif target>a:
+                l = mid+1
+            else:
+                r = mid
+        return False
+    
+#if len(matrix) == 0 or len(matrix[0]) == 0:
+#     return False       
+# m = len(matrix)
+# n = len(matrix[0])
+# row = m-1
+# col = 0
+# while col < n and row >= 0:
+#     if matrix[row][col] > target:
+#         row -= 1
+#     elif matrix[row][col] < target:
+#         col += 1
+#     else: # found it
+#         return True    
+# return False
+```
+
+
+
+
+
+##### 327. 区间和的个数❤
 
 给你一个整数数组 nums 以及两个整数 lower 和 upper 。求数组中，值位于范围 [lower, upper] （包含 lower 和 upper）之内的 区间和的个数 。
 
@@ -825,6 +1265,10 @@ class Solution:
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/count-of-range-sum
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+边求前缀和边通过二分找到 是否有lowLimit，upLimit 区间内的前缀和存在就说明有，将PreSum排序，可统计存在个数。
 
 
 
@@ -869,7 +1313,35 @@ class Solution:
 
 
 
-# 回溯, DFS
+# DFS，回溯
+
+### DFS
+
+#### 树
+
+
+
+#### 图
+
+
+
+#### 网格中
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 回溯
 
 ```python
 result = []
@@ -1995,254 +2467,6 @@ class NumMatrix:
 
 
 
-# 图
-
-学习资料：
-
-https://leetcode-cn.com/leetbook/read/graph/rqu5q7/
-
-
-
-### 并查集
-
-```python
-def find(x):
-    if x == root[x]:
-        return x
-    root[x] = find(root[x])
-    return root[x]
-def union(x,y):  
-	root[find(x)] = find(y)
-```
-
-
-
-##### 547.省份数量（中等）
-
-有 n 个城市，其中一些彼此相连，另一些没有相连。如果城市 a 与城市 b 直接相连，且城市 b 与城市 c 直接相连，那么城市 a 与城市 c 间接相连。
-
-省份 是一组直接或间接相连的城市，组内不含其他没有相连的城市。
-
-给你一个 n x n 的矩阵 isConnected ，其中 isConnected[i][j] = 1 表示第 i 个城市和第 j 个城市直接相连，而 isConnected[i][j] = 0 表示二者不直接相连。
-
-返回矩阵中 省份 的数量。
-
-
-链接：https://leetcode-cn.com/problems/number-of-provinces
-
-
-
-
-```python
-class Solution:
-    def findCircleNum(self, isConnected: List[List[int]]) -> int:
-        pNums = len(isConnected)
-        root = [i for i in range(pNums)]       
-        def find(x):
-            if x == root[x]:
-                return x
-            root[x] = find(root[x])
-            return root[x]
-        def union(x,y):  
-            root[find(x)] = find(y)
-        for i in range(pNums):
-            for j in range(i):
-                if isConnected[i][j]:
-                    union(i,j)
-        return sum(root[i] ==i for i in range(pNums))
-                
-        # pNums = len(isConnected)
-        # root = [i for i in range(pNums)]
-        # rank = [1 for i in range(pNums)]
-        # def find(x):
-        #     if x == root[x]:
-        #         return x
-        #     root[x] = find(root[x])
-        #     return root[x]
-        # def union(x,y):  
-        #     if rank[find(x)]>rank[find(y)]:
-        #         root[find(y)] = find(x)
-        #     elif rank[find(x)]<rank[find(y)]:
-        #         root[find(x)] = find(y)
-        #     else:
-        #         root[find(x)] = find(y)
-        #         rank[x]+=1                 
-        # for i in range(pNums):
-        #     find(i)
-        # print(root)
-        # return len(set(root))
-```
-
-
-
-##### 1202.交换字符串中的元素（中等）*
-
-给你一个字符串 s，以及该字符串中的一些「索引对」数组 pairs，其中 pairs[i] = [a, b] 表示字符串中的两个索引（编号从 0 开始）。
-
-你可以 任意多次交换 在 pairs 中任意一对索引处的字符。
-
-返回在经过若干次交换后，s 可以变成的按字典序最小的字符串。
-
-
-链接：https://leetcode-cn.com/problems/smallest-string-with-swaps
-
-
-```python
-class Solution:
-    def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
-        
-        ans = list()
-        sLen = len(s)
-        root = [i for i in range(sLen)]
-        def find(x):
-            if root[x] == x:
-                return x
-            root[x] = find(root[x])
-            return root[x]
-        def union(x,y):
-            root[find(x)] = find(y)
-            
-        for i in range(len(pairs)):
-            union(pairs[i][0],pairs[i][1])
-        reDict= collections.defaultdict(list)
-        for i in range(sLen):
-            reDict[find(i)].append(s[i])
-        print(reDict)
-        for charList in reDict.values():
-            charList.sort(reverse = True)
-        for i in range(sLen):
-            ans.append(reDict[find(i)].pop())
-        return "".join(ans)
-```
-
-
-
-### 最小生成树【prim算法还没写】
-
-
-
-Kruskal算法：按照权重排序，如果成环[即并查集中find(x) == find(y)]跳过，n-1条连接结束
-
-Prim算法：贪心，顶点为主导，加入未加入的顶点里面和加入的顶点里面的最小值
-
-Kruskal算法时间复杂度为O(M*log(M)), M为边数, 适合于稀疏图；Prim算法的时间复杂度为O(N^2), N为顶点数量, 适合于稠密图或完全图
-
-
-
-##### 1135.最低成本联通所有城市（中等）
-
-想象一下你是个城市基建规划者，地图上有 N 座城市，它们按以 1 到 N 的次序编号。
-
-给你一些可连接的选项 conections，其中每个选项 conections[i] = [city1, city2, cost] 表示将城市 city1 和城市 city2 连接所要的成本。（连接是双向的，也就是说城市 city1 和城市 city2 相连也同样意味着城市 city2 和城市 city1 相连）。
-
-返回使得每对城市间都存在将它们连接在一起的连通路径（可能长度为 1 的）最小成本。该最小成本应该是所用全部连接代价的综合。如果根据已知条件无法完成该项任务，则请你返回 -1。
-
- 
-
-示例 1：
-
-![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2019/07/27/1314_ex2.png)
-
-输入：N = 3, conections = [[1,2,5],[1,3,6],[2,3,1]]
-输出：6
-解释：
-选出任意 2 条边都可以连接所有城市，我们从中选取成本最小的 2 条。
-
-
-链接：https://leetcode-cn.com/problems/connecting-cities-with-minimum-cost
-
-
-
-
-经典最小生成树，Kruskal算法：
-
-```python
-class Solution:
-    def minimumCost(self, n: int, connections: List[List[int]]) -> int:
-        RES = 0
-        COUNT = 0
-        root = [i for i in range(n+1)]
-        #find()别写错了
-        def find(x):
-            if x == root[x]:
-                return x
-            root[x] = find(root[x])
-            return root[x]
-            
-        def union(x,y):
-            root[find(x)] = find(y)
-
-        def isnotConnect(x,y):
-            return find(x) != find(y)
-
-        connections.sort(key = lambda x:x[-1])
-
-        for i in range(len(connections)):
-            if isnotConnect(connections[i][0],connections[i][1]):
-                union(connections[i][0],connections[i][1])
-                RES+=connections[i][2]
-                COUNT+=1
-                if COUNT == n-1:
-                    return RES
-        return -1
-```
-
-
-
-##### 1584.连接所有点的最小费用（中等）
-
-
-
-经典最小生成树，Kruskal算法：
-
-```python
-class Solution:
-    def minCostConnectPoints(self, points: List[List[int]]) -> int:    
-        N = len(points)
-        root = [i for i in range(N)]
-        dis = []
-        for i in range(N):
-            for j in range(i+1,N):
-                dis.append([i,j,abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1])])
-        dis.sort(key=lambda x:x[-1])
-
-        def find(x):
-            if x == root[x]:
-                return x
-            root[x] = find(root[x])
-            return root[x]
-        def union(x,y):
-            root[find(x)] = find(y)
-        def canConnect(x,y):
-            return find(x) != find(y)
-        res =0
-        COUNT=0
-        for i in range(len(dis)):
-            if canConnect(dis[i][0],dis[i][1]):
-                union(dis[i][0],dis[i][1])
-                res+=dis[i][2] 
-                COUNT+=1
-                if COUNT == N-1:
-                    break 
-        return res
-```
-
-
-
-
-
-### 单源最短路径相关算法[加权图路径]
-
-
-
-Dijkstra 算法，Bellman-Ford 算法
-
-
-
-##### 拓扑排序之 Kahn 算法
-
-
-
 # DP
 
 <img src="https://camo.githubusercontent.com/624ae48228610285917d87d92baba28f9e2132199c3e266dbfb82f59acccf302/68747470733a2f2f636f64652d7468696e6b696e672e63646e2e626365626f732e636f6d2f706963732fe58aa8e68081e8a784e588922de680bbe7bb93e5a4a7e7bab2312e6a7067" alt="img"  />
@@ -2488,6 +2712,12 @@ class Solution:
 
 计算到sqrt(n)，吧不大于sqrt(n)的所有质数的倍数都去掉
 
+
+
+![image-20210907165554400](note.assets/image-20210907165554400.png)
+
+
+
 ![Sieve_of_Eratosthenes_animation.gif](https://pic.leetcode-cn.com/1606932458-HgVOnW-Sieve_of_Eratosthenes_animation.gif)
 
 ```python
@@ -2495,7 +2725,7 @@ class Solution:
     def countPrimes(self, n: int) -> int:
         if n < 2:
             return 0
-
+                
         isPrime = [1] * n
         isPrime[0] = isPrime[1] = 0   # 0和1不是质数，先排除掉
 
@@ -2699,7 +2929,116 @@ class Solution:
 
 ### 矩阵
 
-#### [221. 最大正方形](https://leetcode-cn.com/problems/maximal-square/)
+##### 221. 最大正方形
+
+在一个由 `'0'` 和 `'1'` 组成的二维矩阵内，找到只包含 `'1'` 的最大正方形，并返回其面积。
+
+
+
+![img](note.assets/max1grid.jpg)
+
+DP
+
+
+
+
+
+##### 85. 最大矩形
+
+给定一个仅包含 `0` 和 `1` 、大小为 `rows x cols` 的二维二进制矩阵，找出只包含 `1` 的最大矩形，并返回其面积。
+
+
+
+![img](note.assets/maximal-16310990024853.jpg)
+
+单调栈
+
+
+
+##### 74. 搜索二维矩阵
+
+编写一个高效的算法来判断 m x n 矩阵中，是否存在一个目标值。该矩阵具有如下特性：
+
+每行中的整数从左到右按升序排列。
+每行的第一个整数大于前一行的最后一个整数。
+
+
+
+二分或者左下角向上再向右直接搜索
+
+
+![img](note.assets/mat.jpg)
+
+
+
+##### 240. 搜索二维矩阵 II
+
+编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target 。该矩阵具有以下特性：
+
+每行的元素从左到右升序排列。
+每列的元素从上到下升序排列。
+
+
+
+左下角向上再向右直接搜索
+
+![img](note.assets/searchgrid2.jpg)
+
+
+
+
+
+#### 岛屿
+
+##### 463. 岛屿的周长
+
+给定一个 row x col 的二维网格地图 grid ，其中：grid[i][j] = 1 表示陆地， grid[i][j] = 0 表示水域。
+
+网格中的格子 水平和垂直 方向相连（对角线方向不相连）。整个网格被水完全包围，但其中**恰好有一个岛屿**（或者说，一个或多个表示陆地的格子相连组成的岛屿）。
+
+岛屿中没有“湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。网格为长方形，且宽度和高度均不超过 100 。计算这个岛屿的周长。
+
+
+
+![img](note.assets/island.png)
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/island-perimeter
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+学会用test[]查找哦❤
+
+```python
+class Solution:
+    def islandPerimeter(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                test= [(-1,0),(1,0),(0,1),(0,-1)]
+                if grid[i][j] == 1:
+                    nn = 4
+                    for k in test:
+                        test_x, test_y = i+k[0],j+k[1]
+                        
+                        if 0<=test_x<m and 0<=test_y<n and grid[test_x][test_y] == 1:
+                            nn-=1
+                    res+=nn
+        return res
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
