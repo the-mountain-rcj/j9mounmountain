@@ -1195,7 +1195,7 @@ def dichotomyat(self,list,n):#找到>=target左边界值输出#记住格式
 
 
 
-##### 
+
 
 ##### 74. 搜索二维矩阵
 
@@ -1315,17 +1315,425 @@ class Solution:
 
 # DFS，回溯
 
-### DFS
-
-#### 树
+https://leetcode-cn.com/leetbook/read/dfs/eqpew7/
 
 
 
-#### 图
+## DFS
+
+### 树
 
 
 
-#### 网格中
+### 图
+
+```java
+class Solution {
+    private int val;
+    public int closedIsland(int[][] grid) {
+        int closedLandNum = 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 0){
+                    val = 1;
+                    dfs(grid, i, j);
+                    closedLandNum += val;
+                }
+            }
+        }
+        return closedLandNum;
+    }
+    public void dfs(int[][] grid, int i, int j){
+        if(i < 0 || i == grid.length || j < 0 || j == grid[0].length){
+            val = 0;
+            return;
+        }
+        if(grid[i][j] != 0) return;
+        grid[i][j] = 1;
+        dfs(grid, i - 1, j);
+        dfs(grid, i + 1, j);
+        dfs(grid, i, j - 1);
+        dfs(grid, i, j + 1);
+    }
+}
+
+```
+
+
+
+### 网格中
+
+模板
+
+```python
+        def dfs(i,j):
+            if not 0<=i<m or not 0<=j<n: #不在范围内 怎么操作
+                return xxxx
+            
+            if grid[i][j] == 0: #不是要搜索的东西怎么操作
+                return xxx
+
+            if grid[i][j] == 2: #是已经遍历过的 怎么操作  #可以合并为 ！=1
+                return XXX
+
+            grid[i][j] = 2 #标记为2表示已经遍历过了
+                       
+            #开始操作
+            dfs(i-1,j)
+            dfs(i,j-1)
+            dfs(i,j+1)
+            dfs(i+1,j)
+
+            return #返回XXX
+ 
+            
+        m = len(grid)
+        n = len(grid[0])
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:      
+                    return dfs(i,j)   
+
+```
+
+
+
+
+
+#### 岛屿
+
+##### 463. 岛屿的周长
+
+给定一个 row x col 的二维网格地图 grid ，其中：grid[i][j] = 1 表示陆地， grid[i][j] = 0 表示水域。
+
+网格中的格子 水平和垂直 方向相连（对角线方向不相连）。整个网格被水完全包围，但其中**恰好有一个岛屿**（或者说，一个或多个表示陆地的格子相连组成的岛屿）。
+
+岛屿中没有“湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。网格为长方形，且宽度和高度均不超过 100 。计算这个岛屿的周长。
+
+
+
+<img src="note.assets/island.png" alt="img"  />
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/island-perimeter
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+学会用test_x,test_y in (i-1,j),(i,j-1),(i+1,j),(i,j+1):查找哦❤，或者就是dfs模板直接套
+
+```python
+class Solution:
+    def islandPerimeter(self, grid: List[List[int]]) -> int:
+        # m = len(grid)
+        # n = len(grid[0])
+        # res = 0
+        # for i in range(m):
+        #     for j in range(n):         
+        #         if grid[i][j] == 1:
+        #             nn = 4
+        #             for test_x,test_y in (i-1,j),(i,j-1),(i+1,j),(i,j+1):                  
+        #                 if 0<=test_x<m and 0<=test_y<n and grid[test_x][test_y] == 1:
+        #                     nn-=1
+        #             res+=nn
+        # return res
+
+        def dfs(i,j):
+            if not 0<=i<m or not 0<=j<n: #不在范围内 返回一条边
+                return 1    
+            if grid[i][j] == 0: #是水返回一条边
+                return 1
+            if grid[i][j] == 2: #是已经遍历过的 返回0
+                return 0
+            grid[i][j] = 2 #标记为2表示已经遍历过了
+            return dfs(i-1,j)+dfs(i,j-1)+dfs(i,j+1)+dfs(i+1,j)           
+        m = len(grid)
+        n = len(grid[0])       
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:      
+                    return dfs(i,j)
+```
+
+
+
+
+
+##### 200. 岛屿数量
+
+给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
+
+岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+
+此外，你可以假设该网格的四条边均被水包围。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/number-of-islands
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+dfs套模板遍历就可以了
+
+```python
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        def dfs(i,j):
+            if  not 0<=i<m or not 0<=j<n or grid[i][j] == "0":
+                return 
+            grid[i][j] = "0"
+            dfs(i-1,j)
+            dfs(i,j-1)
+            dfs(i,j+1)
+            dfs(i+1,j)    
+             
+        m = len(grid)
+        n = len(grid[0])
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == "1":      
+                    dfs(i,j)
+                    res+=1     
+        return res
+```
+
+
+
+
+
+
+
+
+
+##### 695. 岛屿的最大面积
+
+给定一个包含了一些 0 和 1 的非空二维数组 grid 。
+
+一个 岛屿 是由一些相邻的 1 (代表土地) 构成的组合，这里的「相邻」要求两个 1 必须在水平或者竖直方向上相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。
+
+找到给定的二维数组中最大的岛屿面积。(如果没有岛屿，则返回面积为 0 。)
+
+ <img src="note.assets/1626667010-nSGPXz-image.png" alt="img" style="zoom: 67%;" />
+
+
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/max-area-of-island
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+
+
+```python
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        def area(i,j):
+            if not inArea(i,j) :
+                return 0
+            if grid[i][j] !=1:
+                return 0
+            grid[i][j] = 2
+            return 1+area(i-1,j)+area(i,j-1)+area(i,j+1)+area(i+1,j)
+
+            
+        def inArea(i,j):
+            return 0<=i<m and 0<=j<n 
+            
+        m = len(grid)
+        n = len(grid[0])
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    temp = area(i,j)
+                    res = max(res,temp)
+        return res
+```
+
+
+
+##### 694. 不同岛屿的数量
+
+给定一个非空 01 二维数组表示的网格，一个岛屿由四连通（上、下、左、右四个方向）的 1 组成，你可以认为网格的四周被海水包围。
+
+请你计算这个网格中共有多少个形状不同的岛屿。两个岛屿被认为是相同的，当且仅当一个岛屿可以通过平移变换（不可以旋转、翻转）和另一个岛屿重合。
+
+<img src="note.assets/1626667010-nSGPXz-image.png" alt="img" style="zoom: 67%;" />
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/number-of-distinct-islands
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+
+
+dfs时候记录路径，在回溯的时候也需要记录，不加的话 [[1,0],[1,1]] 和[[1,1],[1,0]] 都是 sd
+
+```python
+class Solution:
+    def numDistinctIslands(self, grid: List[List[int]]) -> int:
+        def dfs(i,j,pre):
+            nonlocal path,grid
+            if not 0 <= i < m or not 0 <= j < n or grid[i][j] != 1:
+                return
+            grid[i][j] = 0
+            path += pre
+            dfs(i, j-1, "a")
+            dfs(i-1, j, "w")
+            dfs(i+1, j, "s")
+            dfs(i, j+1, "d")
+            path+="b" #加上回来的路径， 不加的话 [[1,0],[1,1]] 和[[1,1],[1,0]] 都是 sd
+                    
+        m = len(grid)
+        n = len(grid[0])
+        res = set()
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    path = ""
+                    dfs(i,j,"0")
+                    res.add(path)
+
+        return len(res)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### 827. 最大人工岛
+
+给你一个大小为 n x n 二进制矩阵 grid 。最多 只能将一格 0 变成 1 。
+
+返回执行此操作后，grid 中最大的岛屿面积是多少？
+
+岛屿 由一组上、下、左、右四个方向相连的 1 形成。
+
+![image.png](note.assets/1608107427-fMJpJb-image.png)
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/making-a-large-island
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+两次dfs,第一次dfs记录面积，存储在一个hashmap中，第二次dfs找0，用它连接多个岛屿即可
+
+```python
+class Solution:
+    def largestIsland(self, grid: List[List[int]]) -> int:
+        def area(i,j,k):
+            if not inArea(i,j) or grid[i][j] != 1:
+                return 0
+            grid[i][j] = k
+            return 1+area(i-1,j,k)+area(i,j-1,k)+area(i,j+1,k)+area(i+1,j,k)           
+        def inArea(i,j):
+            return 0<=i<m and 0<=j<m            
+        m = len(grid)
+        k=2
+        recoder = {}
+        for i in range(m):
+            for j in range(m):
+                if grid[i][j] == 1:
+                    temp = area(i,j,k)
+                    recoder[k] = temp
+                    k+=1    
+        res = 0
+        for i in range(m):
+            for j in range(m):               
+                if grid[i][j] == 0:
+                    a =set()
+                    for test_x,test_y in (i-1,j),(i,j-1),(i+1,j),(i,j+1):                    
+                        if 0<=test_x<m and 0<=test_y<m and grid[test_x][test_y] !=0:
+                            a.add(grid[test_x][test_y])                 
+                    temp = 1    
+                    for have in a:
+                        temp += recoder[have]
+                res = max(res,temp)                       
+        return res
+```
+
+
+
+
+
+
+
+##### 1254. 统计封闭岛屿的数目
+
+有一个二维矩阵 grid ，每个位置要么是陆地（记号为 0 ）要么是水域（记号为 1 ）。
+
+我们从一块陆地出发，每次可以往上下左右 4 个方向相邻区域走，能走到的所有陆地区域，我们将其称为一座「岛屿」。
+
+如果一座岛屿 完全 由水域包围，即陆地边缘上下左右所有相邻区域都是水域，那么我们将其称为 「封闭岛屿」。
+
+请返回封闭岛屿的数目。
+
+
+
+![img](note.assets/sample_3_1610-163127155055011.png)
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/number-of-closed-islands
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+
+
+在dfs的时候设置一个val=1表示是封闭岛屿，如果出界了说明不是 
+
+```python
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        def dfs(i,j):
+            nonlocal val,grid
+            if  not 0<=i<m or not 0<=j<n : #出界说明不行 将val变成0
+                val = 0
+                return 
+            if grid[i][j] !=0:
+                return 
+            
+            grid[i][j] = 2
+            dfs(i-1,j)
+            dfs(i,j-1)
+            dfs(i,j+1)
+            dfs(i+1,j)    
+             
+        m = len(grid)
+        n = len(grid[0])
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 0:     
+                    val = 1
+                    dfs(i,j)
+                    res+=val 
+
+        print(grid)   
+        return res
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2988,51 +3396,23 @@ DP
 
 
 
-#### 岛屿
-
-##### 463. 岛屿的周长
-
-给定一个 row x col 的二维网格地图 grid ，其中：grid[i][j] = 1 表示陆地， grid[i][j] = 0 表示水域。
-
-网格中的格子 水平和垂直 方向相连（对角线方向不相连）。整个网格被水完全包围，但其中**恰好有一个岛屿**（或者说，一个或多个表示陆地的格子相连组成的岛屿）。
-
-岛屿中没有“湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。网格为长方形，且宽度和高度均不超过 100 。计算这个岛屿的周长。
+##### 1992. 找到所有的农场组
 
 
 
-![img](note.assets/island.png)
+给你一个下标从 0 开始，大小为 m x n 的二进制矩阵 land ，其中 0 表示一单位的森林土地，1 表示一单位的农场土地。
 
-来源：力扣（LeetCode）
-链接：https://leetcode-cn.com/problems/island-perimeter
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+为了让农场保持有序，农场土地之间以矩形的 农场组 的形式存在。每一个农场组都 仅 包含农场土地。且题目保证不会有两个农场组相邻，也就是说一个农场组中的任何一块土地都 不会 与另一个农场组的任何一块土地在四个方向上相邻。
 
+land 可以用坐标系统表示，其中 land 左上角坐标为 (0, 0) ，右下角坐标为 (m-1, n-1) 。请你找到所有 农场组 最左上角和最右下角的坐标。一个左上角坐标为 (r1, c1) 且右下角坐标为 (r2, c2) 的 农场组 用长度为 4 的数组 [r1, c1, r2, c2] 表示。
 
-
-学会用test[]查找哦❤
-
-```python
-class Solution:
-    def islandPerimeter(self, grid: List[List[int]]) -> int:
-        m = len(grid)
-        n = len(grid[0])
-        res = 0
-        for i in range(m):
-            for j in range(n):
-                test= [(-1,0),(1,0),(0,1),(0,-1)]
-                if grid[i][j] == 1:
-                    nn = 4
-                    for k in test:
-                        test_x, test_y = i+k[0],j+k[1]
-                        
-                        if 0<=test_x<m and 0<=test_y<n and grid[test_x][test_y] == 1:
-                            nn-=1
-                    res+=nn
-        return res
-```
+请你返回一个二维数组，它包含若干个长度为 4 的子数组，每个子数组表示 land 中的一个 农场组 。如果没有任何农场组，请你返回一个空数组。可以以 任意顺序 返回所有农场组。
 
 
 
+直接搜索就完事了
 
+<img src="note.assets/screenshot-2021-07-27-at-12-23-15-copy-of-diagram-drawio-diagrams-net.png" alt="img" style="zoom: 50%;" />
 
 
 
